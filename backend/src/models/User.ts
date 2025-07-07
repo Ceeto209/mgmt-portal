@@ -15,7 +15,7 @@ export class User {
 	@Column()
 	role!: string;
 
-	@Column()
-	device_id?: string | null;
+	@Column({ nullable: true })
+	device_id?: string;
 
 }

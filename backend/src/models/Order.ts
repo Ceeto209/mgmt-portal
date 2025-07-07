@@ -17,16 +17,16 @@ export enum OrderType {
 	OTHER = 'other'
 }
 
-Entity()
+@Entity()
 export class Order {
 
 	@PrimaryGeneratedColumn()
 	orderNumber!: number;
 
 	@Column({
-		type: enum;
+		type: 'enum',
 		enum: OrderType,
-		default?: OrderType.OTHER
+		default: OrderType.OTHER
 	})
 	orderItem!: OrderType;
 
@@ -38,14 +38,14 @@ export class Order {
 	orderUser!: User;
 
 	@Column({
-		type: enum;
-		enum: OrderStatus
-		default?: OrderStatus.PENDING
+		type: 'enum',
+		enum: OrderStatus,
+		default: OrderStatus.PENDING
 	})
 	oderStatus!: OrderStatus;
 
 	@Column({ nullable: true })
-	reviewedBy: number;
+	reviewedBy?: number;
 
 	@ManyToOne(() => User)
 	@JoinColumn({ name: 'reviewedBy' })

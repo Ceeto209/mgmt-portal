@@ -33,14 +33,14 @@ export class Request {
 	@Column({
 		type: 'enum',
 		enum: RequestType,
-		default?: RequestType.OTHER
+		default: RequestType.OTHER
 	})
 	requestType!: RequestType;
 
 	@Column({
-		type: enum,
+		type: 'enum',
 		enum: RequestStatus,
-		default?: RequestStatus.PENDING
+		default: RequestStatus.PENDING
 	})
 	requestStatus!: RequestStatus;
 

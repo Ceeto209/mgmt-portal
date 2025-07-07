@@ -1,35 +1,38 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./dist/server.js",
-  "scripts": {
-    "start": "node ./dist/server.js",
-    "build": "tsc",
-    "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^24.0.8",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "bcrypt": "^6.0.0",
-    "cors": "^2.8.5",
-    "dotenv": "^17.0.0",
-    "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0",
-    "pg": "^8.16.3",
-    "typeorm": "^0.3.25",
-    "typescript-language-server": "^4.3.4"
-  }
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "Backend for management portal",
+	"main": "./dist/server.js",
+	"scripts": {
+		"start": "node ./dist/server.js",
+		"build": "tsc",
+		"dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"create-database": "ts-node src/scripts/create-database.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"devDependencies": {
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.3",
+		"@types/jsonwebtoken": "^9.0.10",
+		"@types/node": "^24.0.8",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.8.3"
+	},
+	"dependencies": {
+		"bcrypt": "^6.0.0",
+		"cors": "^2.8.5",
+		"dotenv": "^17.0.0",
+		"express": "^5.1.0",
+		"jsonwebtoken": "^9.0.2",
+		"morgan": "^1.10.0",
+		"pg": "^8.16.3",
+		"reflect-metadata": "^0.2.2",
+		"ts-node": "^10.9.2",
+		"typeorm": "^0.3.25",
+		"typescript-language-server": "^4.3.4"
+	}
 }
