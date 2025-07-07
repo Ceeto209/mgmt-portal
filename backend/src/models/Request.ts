@@ -1,3 +1,4 @@
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './User';
 
 export enum RequestStatus {
@@ -16,30 +17,53 @@ export enum RequestType {
 	OTHER = 'other'
 }
 
+@Entity()
 export class Request {
 
+	@PrimaryGeneratedColumn()
 	id!: number;
 
+	@Column()
 	inmateId!: number;
 
+	@ManyToOne(() => User)
+	@JoinColumn({ name: 'inmateId' })
 	inmate!: User;
 
+	@Column({
+		type: 'enum',
+		enum: RequestType,
+		default?: RequestType.OTHER
+	})
 	requestType!: RequestType;
 
+	@Column({
+		type: enum,
+		enum: RequestStatus,
+		default?: RequestStatus.PENDING
+	})
 	requestStatus!: RequestStatus;
 
+	@Column('text')
 	description!: string;
 
-	reviewedBy?: number | null;
+	@Column({ nullable: true })
+	reviewedBy?: number;
 
-	reviwer?: User | null;
+	@ManyToOne(() => User)
+	@JoinColumn({ name: 'reviewedBy' })
+	reviwer?: User;
 
-	reviewNotes?: string | null;
+	@Column({ nullable: true })
+	reviewNotes?: string;
 
-	disputeReason?: string | null;
+	@Column({ nullable: true })
+	disputeReason?: string;
 
+	@CreateDateColumn()
 	createdAt!: Date;
 
+	@UpdateDateColumn()
 	updatedAt!: Date;
 
 }
