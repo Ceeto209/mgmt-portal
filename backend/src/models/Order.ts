@@ -11,4 +11,8 @@ export class Order {
 
 	oderStatus!: string;
 
+	orderCreatedDate!: Date;
+
+	orderUpdatedDate!: Date;
+
 }
