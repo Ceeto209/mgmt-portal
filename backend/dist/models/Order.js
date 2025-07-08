@@ -27,9 +27,8 @@ var OrderType;
     OrderType["COMMISSARY"] = "commissary";
     OrderType["OTHER"] = "other";
 })(OrderType || (exports.OrderType = OrderType = {}));
-(0, typeorm_1.Entity)();
-class Order {
-}
+let Order = class Order {
+};
 exports.Order = Order;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -85,3 +84,6 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], Order.prototype, "orderUpdatedDate", void 0);
+exports.Order = Order = __decorate([
+    (0, typeorm_1.Entity)()
+], Order);
