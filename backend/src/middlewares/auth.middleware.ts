@@ -14,7 +14,8 @@ export const authMiddleware = (roles?: string[]) => {
 		try {
 			const authHeader = req.headers.authorization;
 			if (!authHeader) {
-				return res.status(401).json({ message: 'No token provided' });
+				res.status(401).json({ message: 'No token provided' });
+				return;
 			}
 
 			const token = authHeader.split(' ')[1];
@@ -22,13 +23,14 @@ export const authMiddleware = (roles?: string[]) => {
 			const decoded = authService.verifyToken(token);
 
 			if (roles && !roles.includes(decoded.role)) {
-				return res.status(403).json({ message: 'Insufficient permissions' });
+				res.status(403).json({ message: 'Insufficient permissions' });
+				return;
 			}
 
 			req.user = decoded;
 			next();
 		} catch (error) {
-			return res.status(401).json({ message: 'Invalid token' });
+			res.status(401).json({ message: 'Invalid token' });
 		}
 	};
 }; 
