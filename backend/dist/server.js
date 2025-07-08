@@ -9,7 +9,7 @@ const http_1 = require("http");
 require("dotenv/config");
 const cors_1 = __importDefault(require("cors"));
 const data_source_1 = require("./config/data-source");
-//import authRoutes from './routes/auth.routes';
+const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 //import { createRequestRoutes } from './routes/request.routes';
 //import { createDashboardRoutes } from './routes/dashboard.routes';
 const app = (0, express_1.default)();
@@ -28,10 +28,9 @@ data_source_1.AppDataSource.initialize()
 // Create HTTP server
 const server = (0, http_1.createServer)(app);
 // Routes
-/*app.use('/api/auth', authRoutes);
-app.use('/api/requests', createRequestRoutes(wsService));
-app.use('/api/dashboard', createDashboardRoutes());
-*/
+app.use('/api/auth', auth_routes_1.default);
+//app.use('/api/requests', createRequestRoutes(wsService));
+//app.use('/api/dashboard', createDashboardRoutes());
 app.get('/', (req, res) => {
     res.send('Inmate portal API');
 });

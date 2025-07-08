@@ -11,25 +11,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authMiddleware = void 0;
 const auth_service_1 = require("../services/auth.service");
-'../services/auth.service.ts';
 const authMiddleware = (roles) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const authHeader = req.headers.authorization;
             if (!authHeader) {
-                return res.status(401).json({ message: 'No token provided' });
+                res.status(401).json({ message: 'No token provided' });
+                return;
             }
             const token = authHeader.split(' ')[1];
             const authService = new auth_service_1.AuthService();
             const decoded = authService.verifyToken(token);
             if (roles && !roles.includes(decoded.role)) {
-                return res.status(403).json({ message: 'Insufficient permissions' });
+                res.status(403).json({ message: 'Insufficient permissions' });
+                return;
             }
             req.user = decoded;
             next();
         }
         catch (error) {
-            return res.status(401).json({ message: 'Invalid token' });
+            res.status(401).json({ message: 'Invalid token' });
         }
     });
 };

@@ -4,7 +4,7 @@ import { createServer } from 'http';
 import 'dotenv/config';
 import cors from 'cors';
 import { AppDataSource } from './config/data-source';
-//import authRoutes from './routes/auth.routes';
+import authRoutes from './routes/auth.routes';
 //import { createRequestRoutes } from './routes/request.routes';
 //import { createDashboardRoutes } from './routes/dashboard.routes';
 
@@ -29,10 +29,10 @@ AppDataSource.initialize()
 const server = createServer(app);
 
 // Routes
-/*app.use('/api/auth', authRoutes);
-app.use('/api/requests', createRequestRoutes(wsService));
-app.use('/api/dashboard', createDashboardRoutes());
-*/
+app.use('/api/auth', authRoutes);
+//app.use('/api/requests', createRequestRoutes(wsService));
+//app.use('/api/dashboard', createDashboardRoutes());
+
 
 app.get('/', (req, res) => {
 	res.send('Inmate portal API');
