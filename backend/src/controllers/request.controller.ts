@@ -9,6 +9,7 @@ export class RequestController {
 		try {
 			const { requestType, description } = req.body;
 			const inmateId = req.user.id;
+			//const type = req.query.requestType as RequestType; Maybe need to try this, had an issue where submitting a request was always defaulting to OTHER
 
 			const request = await this.requestService.createRequest({
 				inmateId,
