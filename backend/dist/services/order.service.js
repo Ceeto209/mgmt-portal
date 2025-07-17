@@ -24,7 +24,7 @@ class OrderService {
             if (!inmate) {
                 throw new Error('Inmate not found');
             }
-            const order = this.orderRepository.create(Object.assign(Object.assign({}, data), { oderStatus: Order_1.OrderStatus.PENDING }));
+            const order = this.orderRepository.create(Object.assign(Object.assign({}, data), { orderStatus: Order_1.OrderStatus.PENDING }));
             const savedOrder = yield this.orderRepository.save(order);
             return savedOrder;
         });

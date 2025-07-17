@@ -42,7 +42,7 @@ export class Order {
 		enum: OrderStatus,
 		default: OrderStatus.PENDING
 	})
-	oderStatus!: OrderStatus;
+	orderStatus!: OrderStatus;
 
 	@Column({ nullable: true })
 	reviewedBy?: number;

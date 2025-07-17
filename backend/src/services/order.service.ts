@@ -17,7 +17,7 @@ export class OrderService {
 
 		const order = this.orderRepository.create({
 			...data,
-			oderStatus: OrderStatus.PENDING
+			orderStatus: OrderStatus.PENDING
 		});
 
 		const savedOrder = await this.orderRepository.save(order);

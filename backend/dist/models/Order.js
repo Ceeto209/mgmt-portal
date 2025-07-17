@@ -58,7 +58,7 @@ __decorate([
         default: OrderStatus.PENDING
     }),
     __metadata("design:type", String)
-], Order.prototype, "oderStatus", void 0);
+], Order.prototype, "orderStatus", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Number)
