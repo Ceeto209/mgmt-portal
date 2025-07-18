@@ -10,8 +10,9 @@ require("dotenv/config");
 const cors_1 = __importDefault(require("cors"));
 const data_source_1 = require("./config/data-source");
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
-//import { createRequestRoutes } from './routes/request.routes';
-//import { createDashboardRoutes } from './routes/dashboard.routes';
+const request_routes_1 = require("./routes/request.routes");
+const dashboard_routes_1 = require("./routes/dashboard.routes");
+const order_routes_1 = require("./routes/order.routes");
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 // Enable CORS for all routes
@@ -29,8 +30,9 @@ data_source_1.AppDataSource.initialize()
 const server = (0, http_1.createServer)(app);
 // Routes
 app.use('/api/auth', auth_routes_1.default);
-//app.use('/api/requests', createRequestRoutes(wsService));
-//app.use('/api/dashboard', createDashboardRoutes());
+app.use('/api/requests', (0, request_routes_1.createRequestRoutes)());
+app.use('/api/dashboard', (0, dashboard_routes_1.createDashboardRoutes)());
+app.use('/api/orders', (0, order_routes_1.createOrderRoutes)());
 app.get('/', (req, res) => {
     res.send('Inmate portal API');
 });

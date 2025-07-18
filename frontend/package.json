@@ -1,0 +1,69 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Frontend for management portal system",
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^5.14.19",
+    "@mui/material": "^5.15.14 || ^6.0.0 || ^7.0.0",
+    "@mui/x-data-grid": "^8.8.0",
+    "@tanstack/react-query": "^5.75.2",
+    "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.9.0",
+    "chart.js": "^4.4.0",
+    "http-proxy-middleware": "^2.0.6",
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-router-dom": "^6.30.0",
+    "react-scripts": "^5.0.1",
+    "typescript": "^4.9.5",
+    "web-vitals": "^2.1.4",
+    "zustand": "^4.5.6"
+  },
+  "peerDependencies": {
+    "@mui/material": "^5.15.14 || ^6.0.0 || ^7.0.0",
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^16.18.126",
+    "@types/react": "^18.3.20",
+    "@types/react-dom": "^18.3.7",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

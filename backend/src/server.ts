@@ -5,8 +5,9 @@ import 'dotenv/config';
 import cors from 'cors';
 import { AppDataSource } from './config/data-source';
 import authRoutes from './routes/auth.routes';
-//import { createRequestRoutes } from './routes/request.routes';
-//import { createDashboardRoutes } from './routes/dashboard.routes';
+import { createRequestRoutes } from './routes/request.routes';
+import { createDashboardRoutes } from './routes/dashboard.routes';
+import { createOrderRoutes } from './routes/order.routes';
 
 const app = express();
 const port = process.env.PORT;
@@ -30,8 +31,9 @@ const server = createServer(app);
 
 // Routes
 app.use('/api/auth', authRoutes);
-//app.use('/api/requests', createRequestRoutes(wsService));
-//app.use('/api/dashboard', createDashboardRoutes());
+app.use('/api/requests', createRequestRoutes());
+app.use('/api/dashboard', createDashboardRoutes());
+app.use('/api/orders', createOrderRoutes());
 
 
 app.get('/', (req, res) => {
