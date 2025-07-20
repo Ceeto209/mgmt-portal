@@ -7,31 +7,22 @@ import {
 	Typography,
 	Card,
 	CardContent,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
 	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogActions,
-	TextField,
+	Tabs,
+	Tab
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/authStore';
-import { InmateDashboard as InmateDashboardType, isInmateDashboard, DashboardData, Request, RequestType } from '../types';
+import { InmateDashboard as InmateDashboardType, isInmateDashboard, DashboardData } from '../types';
+import RequestsPage from './RequestsPage';
+import OrdersPage from './OrdersPage';
 
 const InmateDashboard: React.FC = () => {
 	const navigate = useNavigate();
 	const logout = useAuthStore(state => state.logout);
-	const [openDialog, setOpenDialog] = React.useState(false);
-	const [requestType, setRequestType] = React.useState<RequestType>(RequestType.MEDICAL);
-	const [description, setDescription] = React.useState('');
+	const [tab, setTab] = React.useState(0);
 
 	const { data: dashboardData, isLoading } = useQuery<DashboardData, Error, InmateDashboardType>({
 		queryKey: ['inmateDashboard'],
@@ -49,17 +40,6 @@ const InmateDashboard: React.FC = () => {
 		navigate('/login');
 	};
 
-	const handleCreateRequest = async () => {
-		try {
-			await api.createRequest(requestType, description);
-			setOpenDialog(false);
-			setDescription('');
-			// TODO: Refresh dashboard data
-		} catch (error) {
-			console.error('Failed to create request:', error);
-		}
-	};
-
 	if (isLoading) {
 		return <Typography>Loading...</Typography>;
 	}
@@ -71,22 +51,15 @@ const InmateDashboard: React.FC = () => {
 	return (
 		<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
 			<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-				<Typography variant="h4">
-					Inmate Dashboard
-				</Typography>
+				<Typography variant="h4">Inmate Dashboard</Typography>
 				<Button variant="contained" color="primary" onClick={handleLogout}>
 					Logout
 				</Button>
 			</Box>
 
-			<Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
-				<Button
-					variant="contained"
-					color="primary"
-					onClick={() => setOpenDialog(true)}
-				>
-					New Request
-				</Button>
+			{/* Inmate Info */}
+			<Box sx={{ mb: 4 }}>
+				<Typography variant="h6">Welcome, Inmate</Typography>
 			</Box>
 
 			{/* Statistics Cards */}
@@ -141,88 +114,17 @@ const InmateDashboard: React.FC = () => {
 				</Grid>
 			</Grid>
 
-			{/* Recent Requests Table */}
+			{/* Tabs for Requests and Orders */}
 			<Paper sx={{ p: 2 }}>
-				<Typography variant="h6" gutterBottom>
-					My Requests
-				</Typography>
-				<TableContainer>
-					<Table>
-						<TableHead>
-							<TableRow>
-								<TableCell>ID</TableCell>
-								<TableCell>Type</TableCell>
-								<TableCell>Status</TableCell>
-								<TableCell>Created</TableCell>
-								<TableCell>Actions</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{dashboardData.myRequests.map((request: Request) => (
-								<TableRow key={request.id}>
-									<TableCell>{request.id}</TableCell>
-									<TableCell>{request.requestType}</TableCell>
-									<TableCell>{request.requestStatus}</TableCell>
-									<TableCell>
-										{new Date(request.createdAt).toLocaleDateString()}
-									</TableCell>
-									<TableCell>
-										{request.requestStatus === 'disputed' && (
-											<Button
-												variant="contained"
-												color="error"
-												size="small"
-												onClick={() => {/* TODO: Implement dispute action */ }}
-											>
-												View Dispute
-											</Button>
-										)}
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
+				<Tabs value={tab} onChange={(_, v) => setTab(v)}>
+					<Tab label="Requests" />
+					<Tab label="Orders" />
+				</Tabs>
+				<Box sx={{ mt: 2 }}>
+					{tab === 0 && <RequestsPage requests={dashboardData.myRequests} />}
+					{tab === 1 && <OrdersPage />}
+				</Box>
 			</Paper>
-
-			{/* New Request Dialog */}
-			<Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-				<DialogTitle>Create New Request</DialogTitle>
-				<DialogContent>
-					<TextField
-						select
-						fullWidth
-						label="Request Type"
-						value={requestType}
-						onChange={(e) => setRequestType(e.target.value as RequestType)}
-						margin="normal"
-						SelectProps={{
-							native: true,
-						}}
-					>
-						<option value="medical">Medical</option>
-						<option value="legal">Legal</option>
-						<option value="visitation">Visitation</option>
-						<option value="tablet">Tablet</option>
-						<option value="other">Other</option>
-					</TextField>
-					<TextField
-						fullWidth
-						label="Description"
-						value={description}
-						onChange={(e) => setDescription(e.target.value)}
-						margin="normal"
-						multiline
-						rows={4}
-					/>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-					<Button onClick={handleCreateRequest} color="primary">
-						Submit
-					</Button>
-				</DialogActions>
-			</Dialog>
 		</Container>
 	);
 };

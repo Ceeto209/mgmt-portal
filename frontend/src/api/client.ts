@@ -63,4 +63,14 @@ export const api = {
 		const response = await axiosInstance.get<DashboardData>('/api/dashboard');
 		return response.data;
 	},
+
+	getMyOrders: async () => {
+		const response = await axiosInstance.get('/api/orders/my-orders');
+		return response.data;
+	},
+
+	createOrder: async (orderItem: string) => {
+		const response = await axiosInstance.post('/api/orders', { orderItem });
+		return response.data;
+	},
 };

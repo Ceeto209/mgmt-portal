@@ -37,6 +37,21 @@ export interface Request {
 	updatedAt: string;
 }
 
+export enum OrderStatus {
+	PENDING = 'pending',
+	APPROVED = 'approved',
+	DENIED = 'denied',
+	DISPUTED = 'disputed'
+}
+
+export enum OrderType {
+	TABLET = 'tablet',
+	DEVICE = 'device',
+	ACCESSORY = 'accessory',
+	COMMISSARY = 'commissary',
+	OTHER = 'other'
+}
+
 export interface BaseDashboard {
 	activeRequests: number;
 	pendingReviews: number;
