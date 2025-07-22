@@ -25,4 +25,52 @@ export class OrderService {
 		return savedOrder;
 	}
 
+	async getOrderById(orderNumber: number): Promise<Order> {
+		const order = await this.orderRepository.findOne({
+			where: { orderNumber },
+			relations: ['orderUser', 'reviwer']
+		});
+		if (!order) {
+			throw new Error('Order not found.');
+		}
+		return order;
+	}
+
+	async getOrdersByUser(inmateId: number): Promise<Order[]> {
+		return await this.orderRepository.find({
+			where: { inmateId },
+			relations: ['orderUser', 'reviwer'],
+			order: { orderCreatedDate: 'DESC' }
+		});
+	}
+
+	async getAllOrders(status?: OrderStatus): Promise<Order[]> {
+		const where = status ? { orderStatus: status } : {};
+		return await this.orderRepository.find({
+			where,
+			relations: ['orderUser', 'reviwer'],
+			order: { orderCreatedDate: 'DESC' }
+		});
+	}
+
+	async reviewOrder(
+		orderNumber: number,
+		reviewerId: number,
+		status: OrderStatus,
+		reviewNotes?: string
+	): Promise<Order> {
+		const order = await this.getOrderById(orderNumber);
+		const reviewer = await this.userRepository.findOne({ where: { id: reviewerId } });
+		if (!reviewer) {
+			throw new Error('Reviewer not found');
+		}
+		if (order.orderStatus !== OrderStatus.PENDING && order.orderStatus !== OrderStatus.DISPUTED) {
+			throw new Error('Order cannot be reviewed in its current state');
+		}
+		order.orderStatus = status;
+		order.reviewedBy = reviewerId;
+		order.reviewNotes = reviewNotes;
+		const updatedOrder = await this.orderRepository.save(order);
+		return updatedOrder;
+	}
 }
