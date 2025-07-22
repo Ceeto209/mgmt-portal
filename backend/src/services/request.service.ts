@@ -95,4 +95,15 @@ export class RequestService {
 		const updateRequest = await this.requestRepository.save(request);
 		return updateRequest;
 	}
+
+	async deleteRequest(requestId: number, inmateId: number): Promise<void> {
+		const request = await this.getRequestById(requestId);
+		if (request.inmateId !== inmateId) {
+			throw new Error('Not authorized to delete this request');
+		}
+		if (request.requestStatus === RequestStatus.DENIED || request.requestStatus === RequestStatus.DISPUTED) {
+			throw new Error('Cannot delete a request that is denied or disputed');
+		}
+		await this.requestRepository.remove(request);
+	}
 }

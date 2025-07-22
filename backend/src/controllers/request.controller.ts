@@ -90,4 +90,16 @@ export class RequestController {
 			res.status(400).json({ message: error.message });
 		}
 	};
+
+	deleteRequest = async (req: ExpressRequest, res: Response) => {
+		try {
+			const requestId = parseInt(req.params.id);
+			const inmateId = req.user.id;
+
+			await this.requestService.deleteRequest(requestId, inmateId);
+			res.status(204).send();
+		} catch (error: any) {
+			res.status(400).json({ message: error.message });
+		}
+	};
 }
