@@ -40,8 +40,9 @@ const RequestsPage: React.FC<RequestsPageProps> = ({ requests: initialRequests }
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const newRequest = await api.createRequest(requestType, description);
-      setRequests([newRequest, ...requests]);
+      await api.createRequest(requestType, description);
+      const updatedRequests = await api.getMyRequests();
+      setRequests(updatedRequests);
       setOpen(false);
       setDescription('');
     } catch (e) {
@@ -61,7 +62,7 @@ const RequestsPage: React.FC<RequestsPageProps> = ({ requests: initialRequests }
         rows={requests}
         columns={columns}
         getRowId={(row) => row.id}
-        initialState={{ pagination: { paginationModel: { pageSize: 5, page: 0 } } }}
+        initialState={{ pagination: { pageSize: 5 } }}
         pagination
         autoHeight
       />

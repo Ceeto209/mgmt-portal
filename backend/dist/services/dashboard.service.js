@@ -26,7 +26,7 @@ class DashboardService {
         return __awaiter(this, void 0, void 0, function* () {
             const requests = yield this.requestRepository.find({
                 where: { inmateId },
-                relations: ['reviwer'],
+                relations: ['reviewer'],
                 order: { createdAt: 'DESC' }
             });
             return {

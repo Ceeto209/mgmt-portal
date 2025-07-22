@@ -29,7 +29,7 @@ export class RequestService {
 	async getRequestById(id: number): Promise<Request> {
 		const request = await this.requestRepository.findOne({
 			where: { id },
-			relations: ['inmate', 'reviwer']
+			relations: ['inmate', 'reviewer']
 		});
 
 		if (!request) {
@@ -67,7 +67,7 @@ export class RequestService {
 		const reviewer = await this.userRepository.findOne({ where: { id: reviewerId } });
 
 		if (!reviewer) {
-			throw new Error('Reviwer not found');
+			throw new Error('Reviewer not found');
 		}
 
 		if (request.requestStatus !== RequestStatus.PENDING && request.requestStatus !== RequestStatus.DISPUTED) {

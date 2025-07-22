@@ -33,7 +33,7 @@ class RequestService {
         return __awaiter(this, void 0, void 0, function* () {
             const request = yield this.requestRepository.findOne({
                 where: { id },
-                relations: ['inmate', 'reviwer']
+                relations: ['inmate', 'reviewer']
             });
             if (!request) {
                 throw new Error('Request not found.');
@@ -65,7 +65,7 @@ class RequestService {
             const request = yield this.getRequestById(requestId);
             const reviewer = yield this.userRepository.findOne({ where: { id: reviewerId } });
             if (!reviewer) {
-                throw new Error('Reviwer not found');
+                throw new Error('Reviewer not found');
             }
             if (request.requestStatus !== Request_1.RequestStatus.PENDING && request.requestStatus !== Request_1.RequestStatus.DISPUTED) {
                 throw new Error('Request cannot be reviewed in its current state');

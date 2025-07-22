@@ -13,7 +13,7 @@ export class DashboardService {
 	async getInmateDashboard(inmateId: number) {
 		const requests = await this.requestRepository.find({
 			where: { inmateId },
-			relations: ['reviwer'],
+			relations: ['reviewer'],
 			order: { createdAt: 'DESC' }
 		});
 

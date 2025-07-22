@@ -49,7 +49,7 @@ export class Order {
 
 	@ManyToOne(() => User)
 	@JoinColumn({ name: 'reviewedBy' })
-	reviwer?: User;
+	reviewer?: User;
 
 	@Column({ nullable: true })
 	reviewNotes?: string;

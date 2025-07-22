@@ -10,6 +10,9 @@ const createOrderRoutes = () => {
     const orderService = new order_service_1.OrderService();
     const orderController = new order_controller_1.OrderController(orderService);
     router.post('/', (0, auth_middleware_1.authMiddleware)(['inmate']), orderController.createOrder);
+    router.get('/my-orders', (0, auth_middleware_1.authMiddleware)(['inmate']), orderController.getOwnOrders);
+    router.get('/', (0, auth_middleware_1.authMiddleware)(['guard', 'admin']), orderController.getAllOrders);
+    router.patch('/:id/review', (0, auth_middleware_1.authMiddleware)(['guard', 'admin']), orderController.reviewOrder);
     return router;
 };
 exports.createOrderRoutes = createOrderRoutes;

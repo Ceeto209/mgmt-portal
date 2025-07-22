@@ -26,16 +26,16 @@ export const api = {
 		return response.data;
 	},
 
-	createRequest: async (type: RequestType, description: string): Promise<Request> => {
+	createRequest: async (requestType: RequestType, description: string): Promise<Request> => {
 		const response = await axiosInstance.post<Request>('/api/requests', {
-			type,
+			requestType,
 			description,
 		});
 		return response.data;
 	},
 
 	getMyRequests: async (): Promise<Request[]> => {
-		const response = await axiosInstance.get<Request[]>('/api/requests/my');
+		const response = await axiosInstance.get<Request[]>('/api/requests/my-requests');
 		return response.data;
 	},
 

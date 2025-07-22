@@ -66,7 +66,7 @@ const OrdersPage: React.FC = () => {
         rows={orders || []}
         columns={columns}
         getRowId={(row) => row.orderNumber}
-        initialState={{ pagination: { paginationModel: { pageSize: 5, page: 0 } } }}
+        initialState={{ pagination: { pageSize: 5 } }}
         pagination
         autoHeight
       />

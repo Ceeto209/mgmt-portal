@@ -67,7 +67,7 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User),
     (0, typeorm_1.JoinColumn)({ name: 'reviewedBy' }),
     __metadata("design:type", User_1.User)
-], Order.prototype, "reviwer", void 0);
+], Order.prototype, "reviewer", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)

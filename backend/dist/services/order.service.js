@@ -29,5 +29,53 @@ class OrderService {
             return savedOrder;
         });
     }
+    getOrderById(orderNumber) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const order = yield this.orderRepository.findOne({
+                where: { orderNumber },
+                relations: ['orderUser', 'reviewer']
+            });
+            if (!order) {
+                throw new Error('Order not found.');
+            }
+            return order;
+        });
+    }
+    getOrdersByUser(inmateId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.orderRepository.find({
+                where: { inmateId },
+                relations: ['orderUser', 'reviewer'],
+                order: { orderCreatedDate: 'DESC' }
+            });
+        });
+    }
+    getAllOrders(status) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const where = status ? { orderStatus: status } : {};
+            return yield this.orderRepository.find({
+                where,
+                relations: ['orderUser', 'reviewer'],
+                order: { orderCreatedDate: 'DESC' }
+            });
+        });
+    }
+    reviewOrder(orderNumber, reviewerId, status, reviewNotes) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const order = yield this.getOrderById(orderNumber);
+            const reviewer = yield this.userRepository.findOne({ where: { id: reviewerId } });
+            if (!reviewer) {
+                throw new Error('Reviewer not found');
+            }
+            if (order.orderStatus !== Order_1.OrderStatus.PENDING && order.orderStatus !== Order_1.OrderStatus.DISPUTED) {
+                throw new Error('Order cannot be reviewed in its current state');
+            }
+            order.orderStatus = status;
+            order.reviewedBy = reviewerId;
+            order.reviewNotes = reviewNotes;
+            const updatedOrder = yield this.orderRepository.save(order);
+            return updatedOrder;
+        });
+    }
 }
 exports.OrderService = OrderService;

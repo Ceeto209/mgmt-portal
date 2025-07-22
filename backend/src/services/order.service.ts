@@ -28,7 +28,7 @@ export class OrderService {
 	async getOrderById(orderNumber: number): Promise<Order> {
 		const order = await this.orderRepository.findOne({
 			where: { orderNumber },
-			relations: ['orderUser', 'reviwer']
+			relations: ['orderUser', 'reviewer']
 		});
 		if (!order) {
 			throw new Error('Order not found.');
@@ -39,7 +39,7 @@ export class OrderService {
 	async getOrdersByUser(inmateId: number): Promise<Order[]> {
 		return await this.orderRepository.find({
 			where: { inmateId },
-			relations: ['orderUser', 'reviwer'],
+			relations: ['orderUser', 'reviewer'],
 			order: { orderCreatedDate: 'DESC' }
 		});
 	}
@@ -48,7 +48,7 @@ export class OrderService {
 		const where = status ? { orderStatus: status } : {};
 		return await this.orderRepository.find({
 			where,
-			relations: ['orderUser', 'reviwer'],
+			relations: ['orderUser', 'reviewer'],
 			order: { orderCreatedDate: 'DESC' }
 		});
 	}
