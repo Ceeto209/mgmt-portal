@@ -13,6 +13,8 @@ const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const request_routes_1 = require("./routes/request.routes");
 const dashboard_routes_1 = require("./routes/dashboard.routes");
 const order_routes_1 = require("./routes/order.routes");
+const user_routes_1 = require("./routes/user.routes");
+const device_routes_1 = require("./routes/device.routes");
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 // Enable CORS for all routes
@@ -33,6 +35,8 @@ app.use('/api/auth', auth_routes_1.default);
 app.use('/api/requests', (0, request_routes_1.createRequestRoutes)());
 app.use('/api/dashboard', (0, dashboard_routes_1.createDashboardRoutes)());
 app.use('/api/orders', (0, order_routes_1.createOrderRoutes)());
+app.use('/api/users', (0, user_routes_1.createUserRoutes)());
+app.use('/api/devices', (0, device_routes_1.createDeviceRoutes)());
 app.get('/', (req, res) => {
     res.send('Inmate portal API');
 });

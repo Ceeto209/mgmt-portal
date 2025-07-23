@@ -46,12 +46,12 @@ export class OrderController {
 		try {
 			const orderNumber = parseInt(req.params.id);
 			const reviewerId = req.user.id;
-			const { action, reviewNotes } = req.body;
+			const { action, reviewNotes, deviceId } = req.body;
 			let status;
 			if (action === 'approve') status = OrderStatus.APPROVED;
 			else if (action === 'reject') status = OrderStatus.DENIED;
 			else throw new Error('Invalid action');
-			const order = await this.orderService.reviewOrder(orderNumber, reviewerId, status, reviewNotes);
+			const order = await this.orderService.reviewOrder(orderNumber, reviewerId, status, reviewNotes, deviceId);
 			res.json(order);
 		} catch (error: any) {
 			res.status(400).json({ message: error.message });

@@ -1,10 +1,12 @@
 import { AppDataSource } from '../config/data-source';
 import { Order, OrderStatus, OrderType } from '../models/Order';
 import { User } from '../models/User';
+import { Device } from '../models/Device';
 
 export class OrderService {
 	private orderRepository = AppDataSource.getRepository(Order);
 	private userRepository = AppDataSource.getRepository(User);
+	private deviceRepository = AppDataSource.getRepository(Device);
 
 	async createOrder(data: {
 		inmateId: number;
@@ -57,7 +59,8 @@ export class OrderService {
 		orderNumber: number,
 		reviewerId: number,
 		status: OrderStatus,
-		reviewNotes?: string
+		reviewNotes?: string,
+		deviceId?: string
 	): Promise<Order> {
 		const order = await this.getOrderById(orderNumber);
 		const reviewer = await this.userRepository.findOne({ where: { id: reviewerId } });
@@ -71,6 +74,22 @@ export class OrderService {
 		order.reviewedBy = reviewerId;
 		order.reviewNotes = reviewNotes;
 		const updatedOrder = await this.orderRepository.save(order);
+
+		if (deviceId) {
+			const device = await this.deviceRepository.findOne({ where: { id: deviceId, status: 'active' } });
+
+			if (!device) throw new Error('Device not available');
+
+			const assigned = await this.userRepository.findOne({ where: { device_id: deviceId } });
+			if (assigned) throw new Error('Device already assigned');
+
+			const user = await this.userRepository.findOne({ where: { id: order.inmateId } });
+			if (user) {
+				user.device_id = deviceId;
+				await this.userRepository.save(user);
+			}
+		}
+
 		return updatedOrder;
 	}
 }

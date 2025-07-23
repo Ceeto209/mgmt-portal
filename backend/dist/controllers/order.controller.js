@@ -52,7 +52,7 @@ class OrderController {
             try {
                 const orderNumber = parseInt(req.params.id);
                 const reviewerId = req.user.id;
-                const { action, reviewNotes } = req.body;
+                const { action, reviewNotes, deviceId } = req.body;
                 let status;
                 if (action === 'approve')
                     status = Order_1.OrderStatus.APPROVED;
@@ -60,7 +60,7 @@ class OrderController {
                     status = Order_1.OrderStatus.DENIED;
                 else
                     throw new Error('Invalid action');
-                const order = yield this.orderService.reviewOrder(orderNumber, reviewerId, status, reviewNotes);
+                const order = yield this.orderService.reviewOrder(orderNumber, reviewerId, status, reviewNotes, deviceId);
                 res.json(order);
             }
             catch (error) {

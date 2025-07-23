@@ -8,6 +8,8 @@ import authRoutes from './routes/auth.routes';
 import { createRequestRoutes } from './routes/request.routes';
 import { createDashboardRoutes } from './routes/dashboard.routes';
 import { createOrderRoutes } from './routes/order.routes';
+import { createUserRoutes } from './routes/user.routes';
+import { createDeviceRoutes } from './routes/device.routes';
 
 const app = express();
 const port = process.env.PORT;
@@ -34,7 +36,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/requests', createRequestRoutes());
 app.use('/api/dashboard', createDashboardRoutes());
 app.use('/api/orders', createOrderRoutes());
-
+app.use('/api/users', createUserRoutes());
+app.use('/api/devices', createDeviceRoutes());
 
 app.get('/', (req, res) => {
 	res.send('Inmate portal API');

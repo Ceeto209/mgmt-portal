@@ -13,10 +13,12 @@ exports.OrderService = void 0;
 const data_source_1 = require("../config/data-source");
 const Order_1 = require("../models/Order");
 const User_1 = require("../models/User");
+const Device_1 = require("../models/Device");
 class OrderService {
     constructor() {
         this.orderRepository = data_source_1.AppDataSource.getRepository(Order_1.Order);
         this.userRepository = data_source_1.AppDataSource.getRepository(User_1.User);
+        this.deviceRepository = data_source_1.AppDataSource.getRepository(Device_1.Device);
     }
     createOrder(data) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -60,7 +62,7 @@ class OrderService {
             });
         });
     }
-    reviewOrder(orderNumber, reviewerId, status, reviewNotes) {
+    reviewOrder(orderNumber, reviewerId, status, reviewNotes, deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
             const order = yield this.getOrderById(orderNumber);
             const reviewer = yield this.userRepository.findOne({ where: { id: reviewerId } });
@@ -74,6 +76,19 @@ class OrderService {
             order.reviewedBy = reviewerId;
             order.reviewNotes = reviewNotes;
             const updatedOrder = yield this.orderRepository.save(order);
+            if (deviceId) {
+                const device = yield this.deviceRepository.findOne({ where: { id: deviceId, status: 'active' } });
+                if (!device)
+                    throw new Error('Device not available');
+                const assigned = yield this.userRepository.findOne({ where: { device_id: deviceId } });
+                if (assigned)
+                    throw new Error('Device already assigned');
+                const user = yield this.userRepository.findOne({ where: { id: order.inmateId } });
+                if (user) {
+                    user.device_id = deviceId;
+                    yield this.userRepository.save(user);
+                }
+            }
             return updatedOrder;
         });
     }
