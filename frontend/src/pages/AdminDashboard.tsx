@@ -27,7 +27,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/authStore';
-import { AdminDashboard as AdminDashboardType, isAdminDashboard, DashboardData, Request, RequestStatus, Order, OrderStatus, Device } from '../types';
+import { AdminDashboard as AdminDashboardType, isAdminDashboard, DashboardData, Request, RequestStatus, Order, OrderStatus, OrderType, Device } from '../types';
 import AdminUsersTab from './AdminUserTab';
 
 const AdminDashboard: React.FC = () => {
@@ -67,10 +67,13 @@ const AdminDashboard: React.FC = () => {
 	};
 
 	const handleOrderReview = async (id: string, action: 'approve' | 'reject') => {
-		const deviceList = await api.getAvailableDevices();
+		const order = ordersData?.find(o => String(o.orderNumber) === id) || null;
+		let deviceList: Device[] = [];
+		if (order && (order.orderItem === OrderType.TABLET || order.orderItem === OrderType.DEVICE)) {
+			deviceList = await api.getAvailableDevices();
+		}
 		setDevices(deviceList);
 		setSelectedDevice('');
-		const order = ordersData?.find(o => String(o.orderNumber) === id) || null;
 		setReviewDialog({ order, action });
 	};
 
@@ -81,6 +84,8 @@ const AdminDashboard: React.FC = () => {
 		queryClient.invalidateQueries({ queryKey: ['allOrders'] });
 		queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
 	};
+
+	const needsDevice = reviewDialog.order?.orderItem === OrderType.TABLET || reviewDialog.order?.orderItem === OrderType.DEVICE;
 
 	if (isLoading) {
 		return <Typography>Loading...</Typography>;
@@ -279,21 +284,25 @@ const AdminDashboard: React.FC = () => {
 			</Container>
 
 			<Dialog open={Boolean(reviewDialog.order)} onClose={() => setReviewDialog({ order: null, action: 'approve' })}>
-				<DialogTitle>Assign Device</DialogTitle>
+				<DialogTitle>{needsDevice ? 'Assign Device' : 'Review Order'}</DialogTitle>
 				<DialogContent>
-					{devices.length === 0 ? (
-						<Typography>No available devices</Typography>
+					{needsDevice ? (
+						devices.length === 0 ? (
+							<Typography>No available devices</Typography>
+						) : (
+							<TextField select fullWidth label="Device" value={selectedDevice} onChange={e => setSelectedDevice(e.target.value)} margin="normal">
+								{devices.map(d => (
+									<MenuItem key={d.id} value={d.id}>{d.serial_number}</MenuItem>
+								))}
+							</TextField>
+						)
 					) : (
-						<TextField select fullWidth label="Device" value={selectedDevice} onChange={e => setSelectedDevice(e.target.value)} margin="normal">
-							{devices.map(d => (
-								<MenuItem key={d.id} value={d.id}>{d.serial_number}</MenuItem>
-							))}
-						</TextField>
+						<Typography>Are you sure?</Typography>
 					)}
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={() => setReviewDialog({ order: null, action: 'approve' })}>Cancel</Button>
-					<Button onClick={confirmOrderReview}>Confirm</Button>
+					<Button onClick={confirmOrderReview} disabled={needsDevice && devices.length === 0}>Confirm</Button>
 				</DialogActions>
 			</Dialog>
 		</>
