@@ -15,15 +15,17 @@ import {
 	TableRow,
 	Button,
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/authStore';
-import { AdminDashboard as AdminDashboardType, isAdminDashboard, DashboardData, Request } from '../types';
+import { AdminDashboard as AdminDashboardType, isAdminDashboard, DashboardData, Request, RequestStatus, Order } from '../types';
 
 const AdminDashboard: React.FC = () => {
 	const navigate = useNavigate();
 	const logout = useAuthStore(state => state.logout);
+	const queryClient = useQueryClient();
+
 	const { data: dashboardData, isLoading } = useQuery<DashboardData, Error, AdminDashboardType>({
 		queryKey: ['adminDashboard'],
 		queryFn: () => api.getDashboard('admin'),
@@ -35,9 +37,24 @@ const AdminDashboard: React.FC = () => {
 		},
 	});
 
+	const { data: ordersData } = useQuery<Order[]>({
+		queryKey: ['allOrders'],
+		queryFn: api.getAllOrders,
+	});
+
 	const handleLogout = () => {
 		logout();
 		navigate('/login');
+	};
+
+	const handleReview = async (id: string, status: RequestStatus) => {
+		await api.reviewRequests(id, status);
+		queryClient.invalidateQueries(['adminDashboard']);
+	};
+
+	const handleOrderReview = async (id: string, action: 'approve' | 'reject') => {
+		await api.reviewRequests(id, action);
+		queryClient.invalidateQueries(['allOrders']);
 	};
 
 	if (isLoading) {
@@ -125,6 +142,7 @@ const AdminDashboard: React.FC = () => {
 								<TableCell>Status</TableCell>
 								<TableCell>Inmate</TableCell>
 								<TableCell>Created</TableCell>
+								<TableCell>Actions</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -136,6 +154,76 @@ const AdminDashboard: React.FC = () => {
 									<TableCell>{request.inmateId}</TableCell>
 									<TableCell>
 										{new Date(request.createdAt).toLocaleDateString()}
+									</TableCell>
+									<TableCell>
+										<Button
+											variant="contained"
+											color="success"
+											size="small"
+											onClick={() => handleReview(String(request.id), RequestStatus.APPROVED)}
+										>
+											Approve
+										</Button>
+										<Button
+											variant="contained"
+											color="error"
+											size="small"
+											sx={{ ml: 1 }}
+											onClick={() => handleReview(String(request.id), RequestStatus.DENIED)}
+										>
+											Deny
+										</Button>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+			</Paper>
+
+			{/* Orders Table */}
+			<Paper sx={{ p: 2, mt: 4 }}>
+				<Typography variant="h6" gutterBottom>
+					Orders
+				</Typography>
+				<TableContainer>
+					<Table>
+						<TableHead>
+							<TableRow>
+								<TableCell>#</TableCell>
+								<TableCell>Item</TableCell>
+								<TableCell>Status</TableCell>
+								<TableCell>Inmate</TableCell>
+								<TableCell>Created</TableCell>
+								<TableCell>Actions</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{ordersData && ordersData.map((order: Order) => (
+								<TableRow key={order.orderNumber}>
+									<TableCell>{order.orderNumber}</TableCell>
+									<TableCell>{order.orderItem}</TableCell>
+									<TableCell>{order.orderStatus}</TableCell>
+									<TableCell>{order.inmateId}</TableCell>
+									<TableCell>{new Date(order.orderCreatedDate).toLocaleDateString()}</TableCell>
+									<TableCell>
+										<Button
+											variant="contained"
+											color="success"
+											size="small"
+											onClick={() => handleOrderReview(String(order.orderNumber), 'approve')}
+										>
+											Approve
+										</Button>
+										<Button
+											variant="contained"
+											color="error"
+											size="small"
+											sx={{ ml: 1 }}
+											onClick={() => handleOrderReview(String(order.orderNumber), 'reject')}
+										>
+											Deny
+										</Button>
 									</TableCell>
 								</TableRow>
 							))}

@@ -44,9 +44,9 @@ export const api = {
 		return response.data;
 	},
 
-	reviewRequests: async (requestId: string, requestStatus: RequestStatus, reviewNotes?: string): Promise<Request> => {
+	reviewRequests: async (requestId: string, status: RequestStatus, reviewNotes?: string): Promise<Request> => {
 		const response = await axiosInstance.post<Request>(`/api/requests/${requestId}/review`, {
-			requestStatus,
+			status,
 			reviewNotes,
 		});
 		return response.data;
@@ -70,6 +70,19 @@ export const api = {
 
 	getMyOrders: async () => {
 		const response = await axiosInstance.get('/api/orders/my-orders');
+		return response.data;
+	},
+
+	getAllOrders: async () => {
+		const response = await axiosInstance.get('/api/orders');
+		return response.data;
+	},
+
+	reviewOrder: async (orderNumber: string, action: 'approve' | 'reject', reviewNotes?: string) => {
+		const response = await axiosInstance.patch(`/api/orders/${orderNumber}/review`, {
+			action,
+			reviewNotes,
+		});
 		return response.data;
 	},
 

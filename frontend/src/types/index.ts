@@ -52,6 +52,18 @@ export enum OrderType {
 	OTHER = 'other'
 }
 
+export interface Order {
+	orderNumber: number;
+	orderItem: OrderType;
+	inmateId: number;
+	orderStatus: OrderStatus;
+	reviewedBy?: number;
+	reviewNotes?: string;
+	disputeReason?: string;
+	orderCreatedDate: string;
+	orderUpdatedDate: string;
+}
+
 export interface BaseDashboard {
 	activeRequests: number;
 	pendingReviews: number;
@@ -105,7 +117,7 @@ export function isInmateDashboard(data: DashboardData): data is InmateDashboard 
 }
 
 export function isGuardDashboard(data: DashboardData): data is GuardDashboard {
-	return 'totalReviews' in data && 'pendingReviewsList' in data && 'recentActivity' in data;
+	return 'totalReviews' in data && 'pendingReviewList' in data && 'recentActivity' in data;
 }
 
 export function isAdminDashboard(data: DashboardData): data is AdminDashboard {

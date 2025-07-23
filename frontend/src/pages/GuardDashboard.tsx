@@ -15,15 +15,17 @@ import {
 	TableRow,
 	Button,
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/authStore';
-import { GuardDashboard as GuardDashboardType, isGuardDashboard, DashboardData, Request } from '../types';
+import { GuardDashboard as GuardDashboardType, isGuardDashboard, DashboardData, Request, RequestStatus } from '../types';
 
 const GuardDashboard: React.FC = () => {
 	const navigate = useNavigate();
 	const logout = useAuthStore(state => state.logout);
+	const queryClient = useQueryClient();
+
 	const { data: dashboardData, isLoading } = useQuery<DashboardData, Error, GuardDashboardType>({
 		queryKey: ['guardDashboard'],
 		queryFn: () => api.getDashboard('guard'),
@@ -38,6 +40,11 @@ const GuardDashboard: React.FC = () => {
 	const handleLogout = () => {
 		logout();
 		navigate('/login');
+	};
+
+	const handleReview = async (id: string, status: RequestStatus) => {
+		await api.reviewRequests(id, status);
+		queryClient.invalidateQueries(['guardDashboard']);
 	};
 
 	if (isLoading) {
@@ -139,13 +146,23 @@ const GuardDashboard: React.FC = () => {
 									<TableCell>
 										<Button
 											variant="contained"
-											color="primary"
+											color="success"
 											size="small"
-											onClick={() => {/* TODO: Implement review action */ }}
+											onClick={() => handleReview(String(request.id), RequestStatus.APPROVED)}
 										>
-											Review
+											Approve
+										</Button>
+										<Button
+											variant="contained"
+											color="error"
+											size="small"
+											sx={{ ml: 1 }}
+											onClick={() => handleReview(String(request.id), RequestStatus.DENIED)}
+										>
+											Deny
 										</Button>
 									</TableCell>
+
 								</TableRow>
 							))}
 						</TableBody>

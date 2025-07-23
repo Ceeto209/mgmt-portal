@@ -32,7 +32,7 @@ class DashboardService {
             return {
                 activeRequests: requests.filter(r => r.requestStatus === Request_1.RequestStatus.PENDING).length,
                 pendingReviews: requests.filter(r => r.requestStatus === Request_1.RequestStatus.PENDING).length,
-                disputedRequest: requests.filter(r => r.requestStatus === Request_1.RequestStatus.DISPUTED).length,
+                disputedRequests: requests.filter(r => r.requestStatus === Request_1.RequestStatus.DISPUTED).length,
                 approvedRequests: requests.filter(r => r.requestStatus === Request_1.RequestStatus.APPROVED).length,
                 myRequests: requests.slice(0, 5)
             };
@@ -47,8 +47,8 @@ class DashboardService {
             const pendingRequests = requests.filter(r => r.requestStatus === Request_1.RequestStatus.PENDING);
             const disputedRequests = requests.filter(r => r.requestStatus === Request_1.RequestStatus.DISPUTED);
             return {
-                activeRequests: pendingRequests.length, // requests.filter(r => r.requestStatus === RequestStatus.PENDING).length,
-                pendingRequests: pendingRequests.length,
+                activeRequests: pendingRequests.length,
+                pendingReviews: pendingRequests.length,
                 disputedRequests: disputedRequests.length,
                 totalReviews: requests.length,
                 pendingReviewList: pendingRequests.slice(0, 10),
@@ -71,7 +71,7 @@ class DashboardService {
             const disputedRequests = requests.filter(r => r.requestStatus === Request_1.RequestStatus.DISPUTED);
             return {
                 activeRequests: pendingRequests.length,
-                pendingRequests: pendingRequests.length,
+                pendingReviews: pendingRequests.length,
                 disputedRequests: disputedRequests.length,
                 totalUsers: users.length,
                 recentRequests: requests.slice(0, 10),
