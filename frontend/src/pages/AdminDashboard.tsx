@@ -139,6 +139,7 @@ const AdminDashboard: React.FC = () => {
 							<TableRow>
 								<TableCell>ID</TableCell>
 								<TableCell>Type</TableCell>
+								<TableCell>Description</TableCell>
 								<TableCell>Status</TableCell>
 								<TableCell>Inmate</TableCell>
 								<TableCell>Created</TableCell>
@@ -150,6 +151,7 @@ const AdminDashboard: React.FC = () => {
 								<TableRow key={request.id}>
 									<TableCell>{request.id}</TableCell>
 									<TableCell>{request.requestType}</TableCell>
+									<TableCell>{request.description}</TableCell>
 									<TableCell>{request.requestStatus}</TableCell>
 									<TableCell>{request.inmateId}</TableCell>
 									<TableCell>

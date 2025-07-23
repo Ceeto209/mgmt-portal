@@ -129,6 +129,7 @@ const GuardDashboard: React.FC = () => {
 							<TableRow>
 								<TableCell>ID</TableCell>
 								<TableCell>Type</TableCell>
+								<TableCell>Description</TableCell>
 								<TableCell>Inmate</TableCell>
 								<TableCell>Created</TableCell>
 								<TableCell>Actions</TableCell>
@@ -139,6 +140,7 @@ const GuardDashboard: React.FC = () => {
 								<TableRow key={request.id}>
 									<TableCell>{request.id}</TableCell>
 									<TableCell>{request.requestType}</TableCell>
+									<TableCell>{request.description}</TableCell>
 									<TableCell>{request.inmateId}</TableCell>
 									<TableCell>
 										{new Date(request.createdAt).toLocaleDateString()}
@@ -181,6 +183,7 @@ const GuardDashboard: React.FC = () => {
 							<TableRow>
 								<TableCell>Request ID</TableCell>
 								<TableCell>Type</TableCell>
+								<TableCell>Description</TableCell>
 								<TableCell>Status</TableCell>
 								<TableCell>Inmate</TableCell>
 								<TableCell>Date</TableCell>
@@ -191,6 +194,7 @@ const GuardDashboard: React.FC = () => {
 								<TableRow key={activity.id}>
 									<TableCell>{activity.id}</TableCell>
 									<TableCell>{activity.requestType}</TableCell>
+									<TableCell>{activity.description}</TableCell>
 									<TableCell>{activity.requestStatus}</TableCell>
 									<TableCell>{activity.inmateId}</TableCell>
 									<TableCell>
