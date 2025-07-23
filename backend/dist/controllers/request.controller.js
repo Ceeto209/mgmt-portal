@@ -82,6 +82,17 @@ class RequestController {
                 res.status(400).json({ message: error.message });
             }
         });
+        this.deleteRequest = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const requestId = parseInt(req.params.id);
+                const inmateId = req.user.id;
+                yield this.requestService.deleteRequest(requestId, inmateId);
+                res.status(204).send();
+            }
+            catch (error) {
+                res.status(400).json({ message: error.message });
+            }
+        });
     }
     ;
 }

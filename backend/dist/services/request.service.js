@@ -89,5 +89,17 @@ class RequestService {
             return updateRequest;
         });
     }
+    deleteRequest(requestId, inmateId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const request = yield this.getRequestById(requestId);
+            if (request.inmateId !== inmateId) {
+                throw new Error('Not authorized to delete this request');
+            }
+            if (request.requestStatus === Request_1.RequestStatus.DENIED || request.requestStatus === Request_1.RequestStatus.DISPUTED) {
+                throw new Error('Cannot delete a request that is denied or disputed');
+            }
+            yield this.requestRepository.remove(request);
+        });
+    }
 }
 exports.RequestService = RequestService;

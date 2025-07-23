@@ -59,6 +59,10 @@ export const api = {
 		return response.data;
 	},
 
+	deleteRequest: async (requestId: string): Promise<void> => {
+		await axiosInstance.delete(`/api/requests/${requestId}`);
+	},
+
 	getDashboard: async (role: UserRole): Promise<DashboardData> => {
 		const response = await axiosInstance.get<DashboardData>('/api/dashboard');
 		return response.data;

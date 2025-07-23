@@ -14,6 +14,7 @@ const createRequestRoutes = () => {
     router.get('/my-requests', (0, auth_middleware_1.authMiddleware)(['inmate']), requestController.getInmateRequests);
     router.get('/:id', (0, auth_middleware_1.authMiddleware)(['inmate', 'guard', 'admin']), requestController.getRequest);
     router.post('/:id/dispute', (0, auth_middleware_1.authMiddleware)(['inmate']), requestController.disputeRequest);
+    router.delete('/:id', (0, auth_middleware_1.authMiddleware)(['inmate']), requestController.deleteRequest);
     // admin, gaurd routes
     router.get('/', (0, auth_middleware_1.authMiddleware)(['guard', 'admin']), requestController.getAllRequests);
     router.post('/:id/review', (0, auth_middleware_1.authMiddleware)(['guard', 'admin']), requestController.reviewRequest);
