@@ -19,7 +19,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/client';
 import { useAuthStore } from '../stores/authStore';
-import { AdminDashboard as AdminDashboardType, isAdminDashboard, DashboardData, Request, RequestStatus, Order } from '../types';
+import { AdminDashboard as AdminDashboardType, isAdminDashboard, DashboardData, Request, RequestStatus, Order, OrderStatus } from '../types';
 
 const AdminDashboard: React.FC = () => {
 	const navigate = useNavigate();
@@ -49,12 +49,12 @@ const AdminDashboard: React.FC = () => {
 
 	const handleReview = async (id: string, status: RequestStatus) => {
 		await api.reviewRequests(id, status);
-		queryClient.invalidateQueries(['adminDashboard']);
+		queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
 	};
 
 	const handleOrderReview = async (id: string, action: 'approve' | 'reject') => {
-		await api.reviewRequests(id, action);
-		queryClient.invalidateQueries(['allOrders']);
+		await api.reviewOrder(id, action);
+		queryClient.invalidateQueries({ queryKey: ['allOrders'] });
 	};
 
 	if (isLoading) {

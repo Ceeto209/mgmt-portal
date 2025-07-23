@@ -44,7 +44,7 @@ const GuardDashboard: React.FC = () => {
 
 	const handleReview = async (id: string, status: RequestStatus) => {
 		await api.reviewRequests(id, status);
-		queryClient.invalidateQueries(['guardDashboard']);
+		queryClient.invalidateQueries({ queryKey: ['guardDashboard'] });
 	};
 
 	if (isLoading) {
