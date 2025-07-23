@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AuthResponse, Request, RequestType, DashboardData, UserRole, RequestStatus } from '../types';
+import { AuthResponse, Request, RequestType, DashboardData, UserRole, RequestStatus, User, Device } from '../types';
 
 const axiosInstance = axios.create({
 	headers: {
@@ -78,16 +78,36 @@ export const api = {
 		return response.data;
 	},
 
-	reviewOrder: async (orderNumber: string, action: 'approve' | 'reject', reviewNotes?: string) => {
+	reviewOrder: async (orderNumber: string, action: 'approve' | 'reject', reviewNotes?: string, deviceId?: string) => {
 		const response = await axiosInstance.patch(`/api/orders/${orderNumber}/review`, {
 			action,
 			reviewNotes,
+			deviceId,
 		});
 		return response.data;
 	},
 
 	createOrder: async (orderItem: string) => {
 		const response = await axiosInstance.post('/api/orders', { orderItem });
+		return response.data;
+	},
+
+	getUsers: async (): Promise<User[]> => {
+		const response = await axiosInstance.get('/api/users');
+		return response.data;
+	},
+
+	createUser: async (username: string, password: string, role: string): Promise<User> => {
+		const response = await axiosInstance.post('/api/users', { username, password, role });
+		return response.data;
+	},
+
+	deleteUser: async (id: number): Promise<void> => {
+		await axiosInstance.delete(`/api/users/${id}`);
+	},
+
+	getAvailableDevices: async (): Promise<Device[]> => {
+		const response = await axiosInstance.get('/api/devices/available');
 		return response.data;
 	},
 };

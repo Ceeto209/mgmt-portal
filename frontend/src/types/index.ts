@@ -7,6 +7,13 @@ export interface User {
 	role: UserRole;
 }
 
+export interface Device {
+	id: string;
+	serial_number: string;
+	status: 'active' | 'deactive';
+	price: number;
+}
+
 export interface AuthResponse {
 	token: string;
 	user: User;
