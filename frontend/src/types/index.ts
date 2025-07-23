@@ -3,6 +3,7 @@ export type UserRole = 'inmate' | 'guard' | 'admin';
 export interface User {
 	id: string;
 	username: string;
+	device_id?: string;
 	role: UserRole;
 }
 

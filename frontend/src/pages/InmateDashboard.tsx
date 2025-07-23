@@ -22,6 +22,7 @@ import OrdersPage from './OrdersPage';
 const InmateDashboard: React.FC = () => {
 	const navigate = useNavigate();
 	const logout = useAuthStore(state => state.logout);
+	const user = useAuthStore(state => state.user);
 	const [tab, setTab] = React.useState(0);
 
 	const { data: dashboardData, isLoading } = useQuery<DashboardData, Error, InmateDashboardType>({
@@ -59,7 +60,7 @@ const InmateDashboard: React.FC = () => {
 
 			{/* Inmate Info */}
 			<Box sx={{ mb: 4 }}>
-				<Typography variant="h6">Welcome, Inmate</Typography>
+				<Typography variant="h6">Welcome, {user?.username}</Typography>
 			</Box>
 
 			{/* Statistics Cards */}
@@ -114,15 +115,29 @@ const InmateDashboard: React.FC = () => {
 				</Grid>
 			</Grid>
 
-			{/* Tabs for Requests and Orders */}
+			{/* Tabs for Home, Requests and Orders */}
 			<Paper sx={{ p: 2 }}>
 				<Tabs value={tab} onChange={(_, v) => setTab(v)}>
+					<Tab label="Home" />
 					<Tab label="Requests" />
 					<Tab label="Orders" />
 				</Tabs>
 				<Box sx={{ mt: 2 }}>
-					{tab === 0 && <RequestsPage requests={dashboardData.myRequests} />}
-					{tab === 1 && <OrdersPage />}
+					{tab === 0 && (
+						<Box>
+							<Typography variant="h6" gutterBottom>
+								Account Number: {user?.id}
+							</Typography>
+							<Typography variant="h6" gutterBottom>
+								Name: {user?.username}
+							</Typography>
+							<Typography variant="h6" gutterBottom>
+								Device: {user?.device_id || 'None'}
+							</Typography>
+						</Box>
+					)}
+					{tab === 1 && <RequestsPage requests={dashboardData.myRequests} />}
+					{tab === 2 && <OrdersPage />}
 				</Box>
 			</Paper>
 		</Container>

@@ -24,6 +24,7 @@ import { GuardDashboard as GuardDashboardType, isGuardDashboard, DashboardData, 
 const GuardDashboard: React.FC = () => {
 	const navigate = useNavigate();
 	const logout = useAuthStore(state => state.logout);
+	const user = useAuthStore(state => state.user);
 	const queryClient = useQueryClient();
 
 	const { data: dashboardData, isLoading } = useQuery<DashboardData, Error, GuardDashboardType>({
@@ -64,6 +65,9 @@ const GuardDashboard: React.FC = () => {
 				<Button variant="contained" color="primary" onClick={handleLogout}>
 					Logout
 				</Button>
+			</Box>
+			<Box sx={{ mb: 4 }}>
+				<Typography variant='h6'>Welcome, {user?.username}</Typography>
 			</Box>
 
 			{/* Statistics Cards */}
