@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Device } from './Device';
 
 @Entity()
 export class User {
@@ -17,5 +18,9 @@ export class User {
 
 	@Column({ nullable: true })
 	device_id?: string;
+
+	@ManyToOne(() => Device, { nullable: true })
+	@JoinColumn({ name: 'device_id' })
+	device?: Device;
 
 }
