@@ -73,8 +73,10 @@ export const api = {
 		return response.data;
 	},
 
-	getAllOrders: async () => {
-		const response = await axiosInstance.get('/api/orders');
+	getAllOrders: async (status?: string) => {
+		const response = await axiosInstance.get('/api/orders', {
+			params: status ? { status } : {},
+		});
 		return response.data;
 	},
 

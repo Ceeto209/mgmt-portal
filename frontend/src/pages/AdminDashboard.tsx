@@ -53,8 +53,11 @@ const AdminDashboard: React.FC = () => {
 
 	const { data: ordersData } = useQuery<Order[]>({
 		queryKey: ['allOrders'],
-		queryFn: api.getAllOrders,
+		queryFn: () => api.getAllOrders(),
 	});
+
+	const pendingOrders = ordersData?.filter(o => o.orderStatus === OrderStatus.PENDING) || [];
+	const reviewedOrders = ordersData?.filter(o => o.orderStatus !== OrderStatus.PENDING) || [];
 
 	const handleLogout = () => {
 		logout();
@@ -69,7 +72,11 @@ const AdminDashboard: React.FC = () => {
 	const handleOrderReview = async (id: string, action: 'approve' | 'reject') => {
 		const order = ordersData?.find(o => String(o.orderNumber) === id) || null;
 		let deviceList: Device[] = [];
-		if (order && (order.orderItem === OrderType.TABLET || order.orderItem === OrderType.DEVICE)) {
+		if (
+			action === 'approve' &&
+			order &&
+			(order.orderItem === OrderType.TABLET || order.orderItem === OrderType.DEVICE)
+		) {
 			deviceList = await api.getAvailableDevices();
 		}
 		setDevices(deviceList);
@@ -79,13 +86,20 @@ const AdminDashboard: React.FC = () => {
 
 	const confirmOrderReview = async () => {
 		if (!reviewDialog.order) return;
-		await api.reviewOrder(String(reviewDialog.order.orderNumber), reviewDialog.action, undefined, selectedDevice || undefined);
+		const deviceId =
+			reviewDialog.action === 'approve' && selectedDevice ? selectedDevice : undefined;
+		await api.reviewOrder(
+			String(reviewDialog.order.orderNumber),
+			reviewDialog.action,
+			undefined,
+			deviceId
+		);
 		setReviewDialog({ order: null, action: 'approve' });
 		queryClient.invalidateQueries({ queryKey: ['allOrders'] });
 		queryClient.invalidateQueries({ queryKey: ['adminDashboard'] });
 	};
 
-	const needsDevice = reviewDialog.order?.orderItem === OrderType.TABLET || reviewDialog.order?.orderItem === OrderType.DEVICE;
+	const needsDevice = reviewDialog.action === 'approve' && (reviewDialog.order?.orderItem === OrderType.TABLET || reviewDialog.order?.orderItem === OrderType.DEVICE);
 
 	if (isLoading) {
 		return <Typography>Loading...</Typography>;
@@ -114,6 +128,7 @@ const AdminDashboard: React.FC = () => {
 				<Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ mb: 4 }}>
 					<Tab label="Home" />
 					<Tab label="Users" />
+					<Tab label="Reviewed Orders" />
 				</Tabs>
 
 				{tab === 0 && (
@@ -228,10 +243,10 @@ const AdminDashboard: React.FC = () => {
 							</TableContainer>
 						</Paper>
 
-						{/* Orders Table */}
+						{/* Pending Orders Table */}
 						<Paper sx={{ p: 2, mt: 4 }}>
 							<Typography variant="h6" gutterBottom>
-								Orders
+								Pending Orders
 							</Typography>
 							<TableContainer>
 								<Table>
@@ -246,7 +261,7 @@ const AdminDashboard: React.FC = () => {
 										</TableRow>
 									</TableHead>
 									<TableBody>
-										{ordersData && ordersData.map((order: Order) => (
+										{pendingOrders.map((order: Order) => (
 											<TableRow key={order.orderNumber}>
 												<TableCell>{order.orderNumber}</TableCell>
 												<TableCell>{order.orderItem}</TableCell>
@@ -281,6 +296,37 @@ const AdminDashboard: React.FC = () => {
 					</>
 				)}
 				{tab === 1 && <AdminUsersTab />}
+				{tab === 2 && (
+					<Paper sx={{ p: 2 }}>
+						<Typography variant="h6" gutterBottom>
+							Reviewed Orders
+						</Typography>
+						<TableContainer>
+							<Table>
+								<TableHead>
+									<TableRow>
+										<TableCell>#</TableCell>
+										<TableCell>Item</TableCell>
+										<TableCell>Status</TableCell>
+										<TableCell>Inmate</TableCell>
+										<TableCell>Reviewed</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{reviewedOrders.map((order: Order) => (
+										<TableRow key={order.orderNumber}>
+											<TableCell>{order.orderNumber}</TableCell>
+											<TableCell>{order.orderItem}</TableCell>
+											<TableCell>{order.orderStatus}</TableCell>
+											<TableCell>{order.inmateId}</TableCell>
+											<TableCell>{new Date(order.orderUpdatedDate).toLocaleDateString()}</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						</TableContainer>
+					</Paper>
+				)}
 			</Container>
 
 			<Dialog open={Boolean(reviewDialog.order)} onClose={() => setReviewDialog({ order: null, action: 'approve' })}>
