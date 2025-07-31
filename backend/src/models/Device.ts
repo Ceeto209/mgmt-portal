@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 @Entity()
 export class Device {
 
-	@PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn('uuid')
 	id!: string;
 
 	@Column({ nullable: false })

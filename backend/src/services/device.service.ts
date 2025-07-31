@@ -7,7 +7,7 @@ export class DeviceService {
 	private deviceRepository = AppDataSource.getRepository(Device);
 	private userRepository = AppDataSource.getRepository(User);
 
-	async getAvailableDevies(role: 'inmate' | 'guard' | 'admin'): Promise<Device[]> {
+	async getAvailableDevices(role: 'inmate' | 'guard' | 'admin'): Promise<Device[]> {
 		const devices = await this.deviceRepository.find({ where: { status: 'active', role } });
 		const assigned = await this.userRepository.find({
 			where: {

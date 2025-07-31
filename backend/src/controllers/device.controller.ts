@@ -10,7 +10,7 @@ export class DeviceController {
 			if (!role) {
 				throw new Error('role query param required');
 			}
-			const devices = await this.deviceService.getAvailableDevies(role);
+			const devices = await this.deviceService.getAvailableDevices(role);
 			res.json(devices);
 		} catch (error: any) {
 			res.status(400).json({ message: error.message });

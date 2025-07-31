@@ -15,7 +15,7 @@ let Device = class Device {
 };
 exports.Device = Device;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], Device.prototype, "id", void 0);
 __decorate([
