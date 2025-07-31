@@ -44,7 +44,8 @@ const AdminUsersTab: React.FC = () => {
 							<TableCell>ID</TableCell>
 							<TableCell>Username</TableCell>
 							<TableCell>Role</TableCell>
-							<TableCell>Device</TableCell>
+							<TableCell>Device ID</TableCell>
+							<TableCell>Serial Number</TableCell>
 							<TableCell>Actions</TableCell>
 						</TableRow>
 					</TableHead>
@@ -54,7 +55,8 @@ const AdminUsersTab: React.FC = () => {
 								<TableCell>{u.id}</TableCell>
 								<TableCell>{u.username}</TableCell>
 								<TableCell>{u.role}</TableCell>
-								<TableCell>{u.device_id || '-'}</TableCell>
+								<TableCell>{u.device?.id || u.device_id || '-'}</TableCell>
+								<TableCell>{u.device?.serial_number || '-'}</TableCell>
 								<TableCell>
 									<Button color="error" size="small" onClick={() => handleDelete(Number(u.id))}>Delete</Button>
 								</TableCell>

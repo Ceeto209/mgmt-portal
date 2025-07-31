@@ -13,7 +13,7 @@ export class AuthService {
 	private userRepository = AppDataSource.getRepository(User);
 
 	async login(username: string, password: string): Promise<{ token: string; user: Partial<User> }> {
-		const user = await this.userRepository.findOne({ where: { username } });
+		const user = await this.userRepository.findOne({ where: { username }, relations: ['device'] });
 
 		if (!user) {
 			throw new Error('User not found');

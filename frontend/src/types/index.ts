@@ -4,6 +4,7 @@ export interface User {
 	id: string;
 	username: string;
 	device_id?: string;
+	device?: Device;
 	role: UserRole;
 }
 

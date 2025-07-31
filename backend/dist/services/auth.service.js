@@ -38,7 +38,7 @@ class AuthService {
     }
     login(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield this.userRepository.findOne({ where: { username } });
+            const user = yield this.userRepository.findOne({ where: { username }, relations: ['device'] });
             if (!user) {
                 throw new Error('User not found');
             }

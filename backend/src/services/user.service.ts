@@ -5,7 +5,7 @@ export class UserService {
 	private userRepository = AppDataSource.getRepository(User);
 
 	async getAllUsers(): Promise<User[]> {
-		return this.userRepository.find();
+		return this.userRepository.find({ relations: ['device'] });
 	}
 
 	async createUser(username: string, password: string, role: string): Promise<User> {

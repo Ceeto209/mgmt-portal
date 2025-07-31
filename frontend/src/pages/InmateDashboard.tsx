@@ -132,7 +132,7 @@ const InmateDashboard: React.FC = () => {
 								Name: {user?.username}
 							</Typography>
 							<Typography variant="h6" gutterBottom>
-								Device: {user?.device_id || 'None'}
+								Device: {user?.device?.serial_number || 'None'}
 							</Typography>
 						</Box>
 					)}
