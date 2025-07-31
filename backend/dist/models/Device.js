@@ -25,6 +25,10 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", String)
+], Device.prototype, "role", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: false }),
+    __metadata("design:type", String)
 ], Device.prototype, "status", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: false }),
