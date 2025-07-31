@@ -9,6 +9,9 @@ export const createDeviceRoutes = () => {
 	const deviceController = new DeviceController(deviceService);
 
 	router.get('/available', authMiddleware(['admin', 'guard']), deviceController.getAvailableDevices);
+	router.get('/', authMiddleware(['admin', 'guard']), deviceController.listDevices);
+	router.patch('/:id/status', authMiddleware(['admin', 'guard']), deviceController.updateStatus);
+	router.get('/:id/audits', authMiddleware(['admin', 'guard']), deviceController.getAudits);
 
 	return router;
 };

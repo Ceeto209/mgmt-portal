@@ -8,6 +8,7 @@ const typeorm_1 = require("typeorm");
 const Request_1 = require("../models/Request");
 const User_1 = require("../models/User");
 const Device_1 = require("../models/Device");
+const DeviceAudit_1 = require("../models/DeviceAudit");
 const Order_1 = require("../models/Order");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -18,7 +19,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [Request_1.Request, User_1.User, Device_1.Device, Order_1.Order],
+    entities: [Request_1.Request, User_1.User, Device_1.Device, DeviceAudit_1.DeviceAudit, Order_1.Order],
     synchronize: true,
     logging: true,
 });

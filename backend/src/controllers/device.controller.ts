@@ -16,4 +16,41 @@ export class DeviceController {
 			res.status(400).json({ message: error.message });
 		}
 	};
+
+	listDevices = async (req: Request, res: Response) => {
+		try {
+			const { status, search, page, limit } = req.query as any;
+			const result = await this.deviceService.listDevices({
+				status,
+				search,
+				page: page ? parseInt(page) : 1,
+				limit: limit ? parseInt(limit) : 10,
+			});
+			res.json(result);
+		} catch (error: any) {
+			res.status(400).json({ message: error.message });
+		}
+	};
+
+	updateStatus = async (req: Request, res: Response) => {
+		try {
+			const { status, reason } = req.body as { status: 'active' | 'deactive'; reason?: string };
+			const { id } = req.params;
+			const userId = req.user.id;
+			const device = await this.deviceService.updateStatus(id, status, userId, reason);
+			res.json(device);
+		} catch (error: any) {
+			res.status(400).json({ message: error.message });
+		}
+	};
+
+	getAudits = async (req: Request, res: Response) => {
+		try {
+			const { id } = req.params;
+			const audits = await this.deviceService.getAudits(id);
+			res.json(audits);
+		} catch (error: any) {
+			res.status(400).json({ message: error.message });
+		}
+	};
 }
