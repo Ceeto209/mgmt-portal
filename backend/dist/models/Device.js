@@ -31,7 +31,12 @@ __decorate([
     __metadata("design:type", String)
 ], Device.prototype, "status", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: false }),
+    (0, typeorm_1.Column)({
+        type: 'numeric',
+        precision: 10,
+        scale: 2,
+        nullable: false
+    }),
     __metadata("design:type", Number)
 ], Device.prototype, "price", void 0);
 __decorate([

@@ -15,7 +15,12 @@ export class Device {
 	@Column({ nullable: false })
 	status!: "active" | "deactive";
 
-	@Column({ nullable: false })
+	@Column({
+		type: 'numeric',
+		precision: 10,
+		scale: 2,
+		nullable: false
+	})
 	price!: number;
 
 	@CreateDateColumn()

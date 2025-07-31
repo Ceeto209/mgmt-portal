@@ -9,7 +9,8 @@
 		"dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"create-database": "ts-node src/scripts/create-database.ts",
-		"create-test-users": "ts-node src/scripts/create-test-users.ts"
+		"create-test-users": "ts-node src/scripts/create-test-users.ts",
+		"create-test-devices": "ts-node src/scripts/create-test-devices.ts"
 	},
 	"keywords": [],
 	"author": "",
