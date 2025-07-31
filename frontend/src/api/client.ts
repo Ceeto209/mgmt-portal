@@ -112,4 +112,19 @@ export const api = {
 		const response = await axiosInstance.get('/api/devices/available', { params: { role } });
 		return response.data;
 	},
+
+	listDevices: async (options: { status?: string; search?: string; page?: number; limit?: number }) => {
+		const response = await axiosInstance.get('/api/devices', { params: options });
+		return response.data;
+	},
+
+	updateDeviceStatus: async (id: string, status: 'active' | 'deactive', reason?: string) => {
+		const response = await axiosInstance.patch(`/api/devices/${id}/status`, { status, reason });
+		return response.data;
+	},
+
+	getDeviceAudits: async (id: string) => {
+		const response = await axiosInstance.get(`/api/devices/${id}/audits`);
+		return response.data;
+	},
 };

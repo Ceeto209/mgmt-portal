@@ -29,6 +29,7 @@ import { api } from '../api/client';
 import { useAuthStore } from '../stores/authStore';
 import { AdminDashboard as AdminDashboardType, isAdminDashboard, DashboardData, Request, RequestStatus, Order, OrderStatus, OrderType, Device } from '../types';
 import AdminUsersTab from './AdminUserTab';
+import DeviceTab from './DevicesPage';
 
 const AdminDashboard: React.FC = () => {
 	const navigate = useNavigate();
@@ -128,6 +129,7 @@ const AdminDashboard: React.FC = () => {
 				<Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ mb: 4 }}>
 					<Tab label="Home" />
 					<Tab label="Users" />
+					<Tab label="Devices" />
 					<Tab label="Reviewed Orders" />
 				</Tabs>
 
@@ -296,7 +298,8 @@ const AdminDashboard: React.FC = () => {
 					</>
 				)}
 				{tab === 1 && <AdminUsersTab />}
-				{tab === 2 && (
+				{tab === 2 && <DeviceTab />}
+				{tab === 3 && (
 					<Paper sx={{ p: 2 }}>
 						<Typography variant="h6" gutterBottom>
 							Reviewed Orders

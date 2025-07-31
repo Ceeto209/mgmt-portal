@@ -16,6 +16,20 @@ export interface Device {
 	price: number;
 }
 
+export interface DeviceWithUser extends Device {
+	user?: User;
+}
+
+export interface DeviceAudit {
+	id: number;
+	deviceId: string;
+	action: 'activate' | 'deactivate';
+	reason?: string;
+	performedBy: number;
+	performer: User;
+	createdAt: string;
+}
+
 export interface AuthResponse {
 	token: string;
 	user: User;
