@@ -76,7 +76,7 @@ const DeviceTab: React.FC = () => {
 				columns={columns(handleToggle)}
 				getRowId={row => row.id}
 				autoHeight
-				sx={{ bgcolor: 'Background.paper' }}
+				sx={{ bgcolor: 'background.paper' }}
 				loading={isLoading || mutation.isPending}
 				pageSize={10}
 				page={page}

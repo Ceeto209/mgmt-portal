@@ -33,7 +33,10 @@ export class DeviceService {
 			.leftJoinAndMapOne('device.user', User, 'user', 'user.device_id = device.id');
 
 		if (status) qb.andWhere('device.status = :status', { status });
-		if (search) qb.andWhere('(device.serial_number ILIKE :s OR user.username ILIKE :s)', { s: `%{search}%` });
+		if (search) qb.andWhere(
+			'(device.serial_number ILIKE :s OR user.username ILIKE :s)',
+			{ s: `%${search}%` }
+		);
 
 		qb.orderBy('device.updatedDate', 'DESC')
 			.skip((page - 1) * limit)
