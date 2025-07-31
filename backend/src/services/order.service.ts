@@ -84,10 +84,17 @@ export class OrderService {
 			if (assigned) throw new Error('Device already assigned');
 
 			const user = await this.userRepository.findOne({ where: { id: order.inmateId } });
-			if (user) {
-				user.device_id = deviceId;
-				await this.userRepository.save(user);
+			if (!user) {
+				throw new Error('User not found');
 			}
+
+			if (device.role !== user.role) {
+				throw new Error('Device role mismatch');
+			}
+
+			user.device_id = deviceId;
+			await this.userRepository.save(user);
+
 		}
 
 		return updatedOrder;
