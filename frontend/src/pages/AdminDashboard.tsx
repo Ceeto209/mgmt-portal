@@ -77,7 +77,7 @@ const AdminDashboard: React.FC = () => {
 			order &&
 			(order.orderItem === OrderType.TABLET || order.orderItem === OrderType.DEVICE)
 		) {
-			deviceList = await api.getAvailableDevices();
+			deviceList = await api.getAvailableDevices(order.orderUser.role);
 		}
 		setDevices(deviceList);
 		setSelectedDevice('');

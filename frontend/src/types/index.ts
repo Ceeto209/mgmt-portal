@@ -10,6 +10,7 @@ export interface User {
 export interface Device {
 	id: string;
 	serial_number: string;
+	role: UserRole;
 	status: 'active' | 'deactive';
 	price: number;
 }
@@ -64,6 +65,7 @@ export interface Order {
 	orderNumber: number;
 	orderItem: OrderType;
 	inmateId: number;
+	orderUser: User;
 	orderStatus: OrderStatus;
 	reviewedBy?: number;
 	reviewNotes?: string;

@@ -108,8 +108,8 @@ export const api = {
 		await axiosInstance.delete(`/api/users/${id}`);
 	},
 
-	getAvailableDevices: async (): Promise<Device[]> => {
-		const response = await axiosInstance.get('/api/devices/available');
+	getAvailableDevices: async (role: UserRole): Promise<Device[]> => {
+		const response = await axiosInstance.get('/api/devices/available', { params: { role } });
 		return response.data;
 	},
 };
