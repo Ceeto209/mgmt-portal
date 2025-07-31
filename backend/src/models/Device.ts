@@ -10,6 +10,9 @@ export class Device {
 	serial_number!: string;
 
 	@Column({ nullable: false })
+	role!: 'inmate' | 'guard' | 'admin';
+
+	@Column({ nullable: false })
 	status!: "active" | "deactive";
 
 	@Column({ nullable: false })
