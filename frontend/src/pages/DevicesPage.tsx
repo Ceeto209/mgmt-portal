@@ -47,15 +47,12 @@ const DeviceTab: React.FC = () => {
 			})
 	});
 
-	const mutation = useMutation<
-		void,
-		Error,
-		{ id: string; s: 'active' | 'deactive'; reason?: string }>({
-			mutationFn: ({ id, s, reason }) => api.updateDeviceStatus(id, s, reason),
-			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: ['devices'] });
-			}
-		});
+	const mutation = useMutation<void, Error, { id: string; s: 'active' | 'deactive'; reason?: string }>({
+		mutationFn: ({ id, s, reason }) => api.updateDeviceStatus(id, s, reason),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['devices'] });
+		}
+	});
 
 	const handleToggle = (id: string, s: 'active' | 'deactive') => {
 		mutation.mutate({ id, s });
@@ -79,6 +76,7 @@ const DeviceTab: React.FC = () => {
 				columns={columns(handleToggle)}
 				getRowId={row => row.id}
 				autoHeight
+				sx={{ bgcolor: 'Background.paper' }}
 				loading={isLoading || mutation.isPending}
 				pageSize={10}
 				page={page}
