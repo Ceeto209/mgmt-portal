@@ -2,7 +2,7 @@ import { AppDataSource } from '../config/data-source';
 import { Device } from '../models/Device';
 import { DeviceAudit } from '../models/DeviceAudit';
 import { User } from '../models/User';
-import { Not, FindOperator, In } from 'typeorm';
+import { Not, FindOperator } from 'typeorm';
 
 export class DeviceService {
 	private deviceRepository = AppDataSource.getRepository(Device);
@@ -46,11 +46,36 @@ export class DeviceService {
 		return { devices: devices as (Device & { user?: User })[], total };
 	}
 
+	async assignUser(deviceId: string, userId: number): Promise<void> {
+		const device = await this.deviceRepository.findOne({ where: { id: deviceId } });
+		if (!device) throw new Error('Device not found');
+		const user = await this.userRepository.findOne({ where: { id: userId } });
+		if (!user) throw new Error('User not found');
+		if (user.role !== device.role) {
+			throw new Error('User role does not match the device');
+		}
+		user.device_id = deviceId;
+		await this.userRepository.save(user);
+	}
+
+	async removeUser(deviceId: string): Promise<void> {
+		const user = await this.userRepository.findOne({ where: { device_id: deviceId } });
+		if (user) {
+			user.device_id = null as any;
+			await this.userRepository.save(user);
+		}
+	}
+
 	async updateStatus(deviceId: string, status: 'active' | 'deactive', performedBy: number, reason?: string): Promise<Device> {
 		const device = await this.deviceRepository.findOne({ where: { id: deviceId } });
 		if (!device) throw new Error('Device not found');
 		device.status = status;
 		const updated = await this.deviceRepository.save(device);
+
+		if (status === 'deactive') {
+			await this.removeUser(deviceId);
+		}
+
 		const audit = this.auditRepository.create({
 			deviceId,
 			action: status === 'active' ? 'activate' : 'deactivate',

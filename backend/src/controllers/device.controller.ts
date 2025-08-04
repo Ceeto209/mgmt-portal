@@ -44,6 +44,18 @@ export class DeviceController {
 		}
 	};
 
+	updateUser = async (req: Request, res: Response) => {
+		try {
+			const { status, reason } = req.body as { status: 'active' | 'deactive'; reason?: string };
+			const { id } = req.params;
+			const userId = req.user.id;
+			const device = await this.deviceService.updateStatus(id, status, userId, reason);
+			res.json(device);
+		} catch (error: any) {
+			res.status(400).json({ message: error.message });
+		}
+	};
+
 	getAudits = async (req: Request, res: Response) => {
 		try {
 			const { id } = req.params;
