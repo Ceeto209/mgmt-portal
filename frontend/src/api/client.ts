@@ -123,6 +123,16 @@ export const api = {
 		return response.data;
 	},
 
+	assignDeviceUser: async (id: string, userId: number) => {
+		const response = await axiosInstance.patch(`/api/devices/${id}/user`, { userId });
+		return response.data;
+	},
+
+	removeDeviceUser: async (id: string) => {
+		const response = await axiosInstance.patch(`/api/devices/${id}/user`, { userId: null });
+		return response.data;
+	},
+
 	getDeviceAudits: async (id: string) => {
 		const response = await axiosInstance.get(`/api/devices/${id}/audits`);
 		return response.data;
